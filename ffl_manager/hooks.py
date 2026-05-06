@@ -5,6 +5,24 @@ app_description = "Manages FFL dealer records and links them to sales orders"
 app_email = "wouldyukindly@gmail.com"
 app_license = "gpl-3.0"
 
+
+fixtures = [
+    {
+        "doctype": "Custom Field",
+        "filters": [
+            ["module", "=", "Ffl Manager"]
+        ]
+    }
+]
+
+doc_events = {
+    "Delivery Note": {
+        "before_submit": "ffl_manager.validations.delivery_note.validate_ffl_required"
+    },
+    "File": {
+        "before_delete": "ffl_manager.ffl_manager.doctype.ffl_dealer.ffl_dealer.archive_ffl_copy"
+    }
+}
 # Apps
 # ------------------
 

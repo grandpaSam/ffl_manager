@@ -1,0 +1,159 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:dealer_name",
+ "creation": "2026-05-04 09:49:19.994191",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "dealer_name",
+  "license_number",
+  "expiration_date",
+  "signee_name",
+  "column_break_cmbh",
+  "phone",
+  "email",
+  "address_html",
+  "ffl_copy_section",
+  "ffl_copy",
+  "previous_copies",
+  "address_review_section",
+  "ocr_address_line1",
+  "ocr_city",
+  "ocr_state",
+  "ocr_postal_code",
+  "column_break_xznn",
+  "ffl_preview_html"
+ ],
+ "fields": [
+  {
+   "fieldname": "dealer_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Dealer Name",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "license_number",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "License Number",
+   "reqd": 1
+  },
+  {
+   "fieldname": "expiration_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Expiration Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "signee_name",
+   "fieldtype": "Data",
+   "label": "Signee Name"
+  },
+  {
+   "fieldname": "column_break_cmbh",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "phone",
+   "fieldtype": "Phone",
+   "label": "Phone"
+  },
+  {
+   "fieldname": "email",
+   "fieldtype": "Data",
+   "label": "Email",
+   "options": "Email"
+  },
+  {
+   "fieldname": "ffl_copy_section",
+   "fieldtype": "Section Break",
+   "label": "FFL License Copy"
+  },
+  {
+   "fieldname": "ffl_copy",
+   "fieldtype": "Attach",
+   "label": "Current FFL Copy"
+  },
+  {
+   "fieldname": "previous_copies",
+   "fieldtype": "Table",
+   "label": "Previous Copies",
+   "options": "FFL Dealer Previous Copy"
+  },
+  {
+   "fieldname": "address_html",
+   "fieldtype": "HTML"
+  },
+  {
+   "fieldname": "column_break_xznn",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "ffl_preview_html",
+   "fieldtype": "HTML"
+  },
+  {
+   "fieldname": "address_review_section",
+   "fieldtype": "Heading",
+   "hidden": 1,
+   "label": "Address Review"
+  },
+  {
+   "fieldname": "ocr_address_line1",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Address Line 1"
+  },
+  {
+   "fieldname": "ocr_city",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "City"
+  },
+  {
+   "fieldname": "ocr_state",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "State"
+  },
+  {
+   "fieldname": "ocr_postal_code",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Postol Code"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-05-05 21:53:56.828259",
+ "modified_by": "Administrator",
+ "module": "Ffl Manager",
+ "name": "FFL Dealer",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

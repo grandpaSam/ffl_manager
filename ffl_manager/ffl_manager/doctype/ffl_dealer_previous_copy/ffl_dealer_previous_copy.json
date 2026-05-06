@@ -1,0 +1,54 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-05-04 09:46:24.122340",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "ffl_copy",
+  "expiration_date",
+  "archived_on",
+  "notes"
+ ],
+ "fields": [
+  {
+   "fieldname": "ffl_copy",
+   "fieldtype": "Attach",
+   "in_list_view": 1,
+   "label": "FFL Copy"
+  },
+  {
+   "fieldname": "expiration_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Expiration Date"
+  },
+  {
+   "fieldname": "archived_on",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Archived On"
+  },
+  {
+   "fieldname": "notes",
+   "fieldtype": "Small Text",
+   "label": "Notes"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2026-05-04 18:22:57.070563",
+ "modified_by": "Administrator",
+ "module": "Ffl Manager",
+ "name": "FFL Dealer Previous Copy",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}
