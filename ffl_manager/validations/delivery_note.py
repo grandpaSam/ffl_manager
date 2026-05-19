@@ -2,6 +2,8 @@ import frappe
 
 
 def validate_ffl_required(doc, method):
+    if doc.get("custom_skip_ffl_check"):
+        return
     for item in doc.items:
         requires_ffl = frappe.db.get_value("Item", item.item_code, "custom_ffl_required")
         if requires_ffl:
