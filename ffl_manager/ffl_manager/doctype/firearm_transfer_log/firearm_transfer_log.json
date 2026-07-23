@@ -1,0 +1,230 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "autoname": "naming_series:",
+ "creation": "2026-07-22 21:26:43.924165",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "direction",
+  "transfer_date",
+  "completed",
+  "column_break_details",
+  "serial_number",
+  "make",
+  "model",
+  "firearm_type",
+  "source_document_section",
+  "auto_generated",
+  "source_doctype",
+  "source_docname",
+  "column_break_source",
+  "sales_order",
+  "rma",
+  "location_section",
+  "received_from_address",
+  "column_break_location",
+  "sent_to_address",
+  "ffl_section",
+  "ffl_license_number",
+  "ffl_company_name",
+  "column_break_ffl",
+  "recipient_name",
+  "notes_section",
+  "notes"
+ ],
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Series",
+   "options": "FTL-.YYYY.-.#####"
+  },
+  {
+   "fieldname": "direction",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Direction",
+   "options": "Received\nSent",
+   "reqd": 1
+  },
+  {
+   "fieldname": "transfer_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Transfer Date",
+   "reqd": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "completed",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Entered in FileMaker"
+  },
+  {
+   "fieldname": "column_break_details",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "serial_number",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Serial Number",
+   "reqd": 1
+  },
+  {
+   "fieldname": "make",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Make"
+  },
+  {
+   "default": "ASR",
+   "fieldname": "model",
+   "fieldtype": "Data",
+   "label": "Model"
+  },
+  {
+   "fieldname": "firearm_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Type",
+   "options": "Rifle\nPistol"
+  },
+  {
+   "fieldname": "source_document_section",
+   "fieldtype": "Section Break",
+   "label": "Source Document"
+  },
+  {
+   "default": "0",
+   "description": "Set automatically when this entry was created from a Delivery Note, Shipment, or Stock Entry submission.",
+   "fieldname": "auto_generated",
+   "fieldtype": "Check",
+   "label": "Auto Generated",
+   "read_only": 1
+  },
+  {
+   "fieldname": "source_doctype",
+   "fieldtype": "Link",
+   "label": "Source Doctype",
+   "options": "DocType",
+   "read_only": 1
+  },
+  {
+   "fieldname": "source_docname",
+   "fieldtype": "Dynamic Link",
+   "label": "Source Document",
+   "options": "source_doctype",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_source",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.direction==\"Sent\"",
+   "description": "Optional. Pulls FFL dealer info and ship-to address from the linked Sales Order.",
+   "fieldname": "sales_order",
+   "fieldtype": "Link",
+   "label": "Sales Order",
+   "options": "Sales Order"
+  },
+  {
+   "depends_on": "eval:doc.direction==\"Received\"",
+   "description": "Optional. Pulls the customer address (and serial number, if unambiguous) from the linked RMA.",
+   "fieldname": "rma",
+   "fieldtype": "Link",
+   "label": "RMA",
+   "options": "RMA"
+  },
+  {
+   "fieldname": "location_section",
+   "fieldtype": "Section Break",
+   "label": "Received From / Sent To"
+  },
+  {
+   "depends_on": "eval:doc.direction==\"Received\"",
+   "fieldname": "received_from_address",
+   "fieldtype": "Small Text",
+   "label": "Received From (Address)"
+  },
+  {
+   "fieldname": "column_break_location",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.direction==\"Sent\"",
+   "fieldname": "sent_to_address",
+   "fieldtype": "Small Text",
+   "label": "Sent To (Address)"
+  },
+  {
+   "fieldname": "ffl_section",
+   "fieldtype": "Section Break",
+   "label": "FFL / Recipient Information"
+  },
+  {
+   "description": "Not always available, e.g. if the firearm was sent directly to an individual.",
+   "fieldname": "ffl_license_number",
+   "fieldtype": "Data",
+   "label": "FFL License Number"
+  },
+  {
+   "fieldname": "ffl_company_name",
+   "fieldtype": "Data",
+   "label": "FFL / Company Name"
+  },
+  {
+   "fieldname": "column_break_ffl",
+   "fieldtype": "Column Break"
+  },
+  {
+   "description": "If sent or received directly to/from an individual rather than an FFL.",
+   "fieldname": "recipient_name",
+   "fieldtype": "Data",
+   "label": "Individual Name"
+  },
+  {
+   "fieldname": "notes_section",
+   "fieldtype": "Section Break",
+   "label": "Notes"
+  },
+  {
+   "fieldname": "notes",
+   "fieldtype": "Small Text",
+   "label": "Notes"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-07-22 21:26:43.924165",
+ "modified_by": "Administrator",
+ "module": "Ffl Manager",
+ "name": "Firearm Transfer Log",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "transfer_date",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

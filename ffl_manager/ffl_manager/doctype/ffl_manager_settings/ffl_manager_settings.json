@@ -1,0 +1,47 @@
+{
+ "actions": [],
+ "creation": "2026-07-22 22:14:45.700636",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "transfer_log_section",
+  "default_make"
+ ],
+ "fields": [
+  {
+   "fieldname": "transfer_log_section",
+   "fieldtype": "Section Break",
+   "label": "Firearm Transfer Log"
+  },
+  {
+   "description": "Used to auto-fill the Make on Firearm Transfer Log entries created automatically from Delivery Notes, Shipments, and Stock Entries.",
+   "fieldname": "default_make",
+   "fieldtype": "Data",
+   "label": "Default Make",
+   "reqd": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2026-07-22 22:14:45.700636",
+ "modified_by": "Administrator",
+ "module": "Ffl Manager",
+ "name": "FFL Manager Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

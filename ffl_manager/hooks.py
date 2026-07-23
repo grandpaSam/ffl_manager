@@ -17,7 +17,14 @@ fixtures = [
 
 doc_events = {
     "Delivery Note": {
-        "before_submit": "ffl_manager.validations.delivery_note.validate_ffl_required"
+        "before_submit": "ffl_manager.validations.delivery_note.validate_ffl_required",
+        "on_submit": "ffl_manager.validations.delivery_note.create_firearm_transfer_logs"
+    },
+    "Shipment": {
+        "on_submit": "ffl_manager.validations.shipment.create_firearm_transfer_logs"
+    },
+    "Stock Entry": {
+        "on_submit": "ffl_manager.validations.stock_entry.create_firearm_transfer_logs"
     },
     "File": {
         "before_delete": "ffl_manager.ffl_manager.doctype.ffl_dealer.ffl_dealer.archive_ffl_copy"
