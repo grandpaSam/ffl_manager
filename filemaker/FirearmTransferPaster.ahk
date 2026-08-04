@@ -42,6 +42,21 @@
 ; ============================================================
 
 #Requires AutoHotkey v2.0
+
+; FileMaker often runs elevated (as Administrator). If this script isn't
+; also elevated, Windows UIPI silently swallows the keystrokes it sends
+; to FileMaker — they'd still work fine against a non-elevated app like
+; Notepad, which is a classic symptom of this exact mismatch. Relaunch
+; elevated automatically so that can't happen.
+if !A_IsAdmin {
+	try {
+		Run '*RunAs "' A_AhkPath '" "' A_ScriptFullPath '"'
+	} catch as err {
+		MsgBox "Couldn't relaunch elevated: " err.Message "`n`nIf FileMaker is running as Administrator, right-click this script and choose 'Run as administrator' manually.", "FirearmTransferPaster", "Icon!"
+	}
+	ExitApp
+}
+
 SendMode "Input"
 
 ; Set to false once you've verified the sequence against a scratch
@@ -144,7 +159,7 @@ TypeField(text, needsBackspace := false, label := "") {
 
 	lines := StrSplit(text, "`n")
 	for index, line in lines {
-		SendText line
+		SendInput EscapeForSend(line)
 		Sleep SleepMs
 		if (index < lines.Length) {
 			SendInput "{Enter}"
@@ -154,6 +169,18 @@ TypeField(text, needsBackspace := false, label := "") {
 
 	SendInput "{Tab}"
 	Sleep SleepMs
+}
+
+; SendInput sends real key-down/key-up events (unlike SendText, which sends
+; most characters as Unicode packets that some apps — FileMaker's custom
+; field widgets included — silently ignore). SendInput treats { } ^ ! + #
+; as special, so escape them into their literal-brace form first.
+EscapeForSend(text) {
+	result := ""
+	for ch in StrSplit(text) {
+		result .= InStr("{}^!+#", ch) ? "{" ch "}" : ch
+	}
+	return result
 }
 
 ; Tabs past a field without touching it.
