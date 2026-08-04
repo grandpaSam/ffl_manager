@@ -5,7 +5,9 @@
  "engine": "InnoDB",
  "field_order": [
   "transfer_log_section",
-  "default_make"
+  "default_make",
+  "caliber_mapping_section",
+  "caliber_mapping"
  ],
  "fields": [
   {
@@ -19,6 +21,18 @@
    "fieldtype": "Data",
    "label": "Default Make",
    "reqd": 1
+  },
+  {
+   "fieldname": "caliber_mapping_section",
+   "fieldtype": "Section Break",
+   "label": "Caliber Mapping"
+  },
+  {
+   "description": "Translates the Caliber typed on a Firearm Transfer Log into the string the legacy FileMaker database expects, for the Copy to Clipboard button.",
+   "fieldname": "caliber_mapping",
+   "fieldtype": "Table",
+   "label": "Caliber Mapping",
+   "options": "FFL Caliber Mapping"
   }
  ],
  "index_web_pages_for_search": 1,

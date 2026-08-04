@@ -46,6 +46,13 @@ def fetch_from_sales_order(sales_order):
 
 
 @frappe.whitelist()
+def get_caliber_mapping():
+	"""Caliber (as typed on this doctype) -> legacy FileMaker caliber string, for the Copy to Clipboard button."""
+	rows = frappe.get_single("FFL Manager Settings").caliber_mapping
+	return {row.caliber.lower(): row.filemaker_caliber for row in rows if row.caliber}
+
+
+@frappe.whitelist()
 def fetch_from_rma(rma):
 	rma_customer_address = frappe.db.get_value("RMA", rma, "customer_address")
 	if rma_customer_address is None:

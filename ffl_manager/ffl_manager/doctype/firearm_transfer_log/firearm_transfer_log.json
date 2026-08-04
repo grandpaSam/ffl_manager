@@ -15,6 +15,7 @@
   "make",
   "model",
   "firearm_type",
+  "caliber",
   "source_document_section",
   "auto_generated",
   "source_doctype",
@@ -92,6 +93,12 @@
    "in_list_view": 1,
    "label": "Type",
    "options": "Rifle\nPistol"
+  },
+  {
+   "description": "Used to look up the equivalent FileMaker caliber string in FFL Manager Settings when copying to clipboard for FileMaker entry.",
+   "fieldname": "caliber",
+   "fieldtype": "Data",
+   "label": "Caliber"
   },
   {
    "fieldname": "source_document_section",
