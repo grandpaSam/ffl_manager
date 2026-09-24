@@ -29,6 +29,27 @@ def get_default_make():
 	return make
 
 
+def already_logged(direction, serial_no, sales_order=None, rma=None):
+	"""True if a Firearm Transfer Log entry already covers this specific real-world transfer.
+
+	Manual entries can't be linked via source_doctype/source_docname (those fields are
+	locked to auto-generated entries), so match instead on whichever of Sales Order / RMA
+	the calling hook has available — each represents a single real-world transaction, so
+	this won't collide with an older entry for the same serial number from a prior cycle.
+	"""
+	if sales_order and frappe.db.exists(
+		"Firearm Transfer Log",
+		{"serial_number": serial_no, "direction": direction, "sales_order": sales_order},
+	):
+		return True
+	if rma and frappe.db.exists(
+		"Firearm Transfer Log",
+		{"serial_number": serial_no, "direction": direction, "rma": rma},
+	):
+		return True
+	return False
+
+
 def create_transfer_log_entry(
 	direction,
 	transfer_date,

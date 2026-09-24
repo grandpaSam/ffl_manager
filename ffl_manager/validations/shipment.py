@@ -4,6 +4,7 @@ from frappe.contacts.doctype.address.address import get_address_display
 from frappe.utils import strip_html
 
 from ffl_manager.ffl_manager.firearm_transfer import (
+	already_logged,
 	create_transfer_log_entry,
 	determine_firearm_type,
 	parse_serial_nos,
@@ -46,9 +47,17 @@ def create_firearm_transfer_logs(doc, method):
 				).format(doc.custom_rma, item.idx, item.item_code)
 			)
 
-		firearm_type = determine_firearm_type(item.item_name or item.item_code)
+		firearm_type = None
 
 		for serial_no in serials:
+			if already_logged("Sent", serial_no, rma=doc.custom_rma):
+				# Already recorded manually (or on a prior run) in the Firearm Transfer Log
+				# for this RMA; don't force type detection or duplicate the entry.
+				continue
+
+			if firearm_type is None:
+				firearm_type = determine_firearm_type(item.item_name or item.item_code)
+
 			create_transfer_log_entry(
 				direction="Sent",
 				transfer_date=transfer_date,

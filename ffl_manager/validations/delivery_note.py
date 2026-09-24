@@ -4,9 +4,10 @@ from frappe import _
 from ffl_manager.ffl_manager.doctype.ffl_dealer.ffl_dealer import get_dealer_address_display
 from ffl_manager.ffl_manager.doctype.firearm_transfer_log.firearm_transfer_log import fetch_from_sales_order
 from ffl_manager.ffl_manager.firearm_transfer import (
-	create_transfer_log_entry,
-	determine_firearm_type,
-	parse_serial_nos,
+    already_logged,
+    create_transfer_log_entry,
+    determine_firearm_type,
+    parse_serial_nos,
 )
 
 
@@ -53,9 +54,9 @@ def validate_ffl_required(doc, method):
 
 
 def create_firearm_transfer_logs(doc, method):
-    if doc.get("custom_skip_ffl_check"):
-        return
-
+    # NB: unlike validate_ffl_required, this does NOT bail on custom_skip_ffl_check.
+    # A repair-return DN (RMA-linked, no FFL dealer) still ships without routing
+    # through an FFL, but the bound-book disposition entry must still be written.
     dealer_info_cache = {}
 
     for item in doc.items:
@@ -83,10 +84,19 @@ def create_firearm_transfer_logs(doc, method):
                 dealer_info_cache[item.against_sales_order] = fetch_from_sales_order(item.against_sales_order)
             dealer_info = dealer_info_cache[item.against_sales_order]
 
+            # Repair returns come in via an RMA-linked Sales Order; link the disposition
+            # entry to both the SO and the RMA (mirrors the RMA-receipt acquisition entry).
+            rma = frappe.db.get_value("Sales Order", item.against_sales_order, "custom_rma")
+
             item_name = frappe.db.get_value("Item", row.item_code, "item_name") or row.item_code
-            firearm_type = determine_firearm_type(item_name)
 
             for serial_no in serials:
+                if already_logged("Sent", serial_no, sales_order=item.against_sales_order, rma=rma):
+                    # Already recorded manually (or on a prior run) in the Firearm Transfer Log
+                    # for this Sales Order / RMA; don't force type detection or duplicate the entry.
+                    continue
+
+                firearm_type = determine_firearm_type(item_name)
                 create_transfer_log_entry(
                     direction="Sent",
                     transfer_date=doc.posting_date,
@@ -95,7 +105,9 @@ def create_firearm_transfer_logs(doc, method):
                     source_doctype="Delivery Note",
                     source_docname=doc.name,
                     sales_order=item.against_sales_order,
+                    rma=rma,
                     sent_to_address=dealer_info.get("sent_to_address"),
                     ffl_license_number=dealer_info.get("ffl_license_number"),
                     ffl_company_name=dealer_info.get("ffl_company_name"),
+                    recipient_name=dealer_info.get("recipient_name"),
                 )

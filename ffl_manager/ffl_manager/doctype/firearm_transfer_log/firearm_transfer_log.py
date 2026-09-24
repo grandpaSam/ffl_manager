@@ -18,7 +18,7 @@ def fetch_from_sales_order(sales_order):
 	so = frappe.db.get_value(
 		"Sales Order",
 		sales_order,
-		["custom_ffl_dealer", "shipping_address", "address_display"],
+		["custom_ffl_dealer", "shipping_address", "address_display", "customer"],
 		as_dict=True,
 	)
 	if not so:
@@ -40,7 +40,11 @@ def fetch_from_sales_order(sales_order):
 			result["ffl_license_number"] = dealer.license_number
 			result["ffl_company_name"] = dealer.dealer_name
 	else:
+		# Repair-return: no FFL dealer, so the firearm ships back to the customer's
+		# own address. Record the customer as the recipient.
 		result["sent_to_address"] = strip_html(so.shipping_address or so.address_display or "")
+		if so.customer:
+			result["recipient_name"] = frappe.db.get_value("Customer", so.customer, "customer_name")
 
 	return result
 
