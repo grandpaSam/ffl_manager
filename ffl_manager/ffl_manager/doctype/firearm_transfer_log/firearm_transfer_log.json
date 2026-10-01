@@ -12,6 +12,8 @@
   "completed",
   "column_break_details",
   "serial_number",
+  "item_code",
+  "item_name",
   "make",
   "model",
   "firearm_type",
@@ -74,6 +76,21 @@
    "in_list_view": 1,
    "label": "Serial Number",
    "reqd": 1
+  },
+  {
+   "description": "Resolved automatically from the Serial Number via ERPNext's Serial No record. Can be set manually if no matching Serial No exists.",
+   "fieldname": "item_code",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Item",
+   "options": "Item"
+  },
+  {
+   "fetch_from": "item_code.item_name",
+   "fieldname": "item_name",
+   "fieldtype": "Data",
+   "label": "Item Name",
+   "read_only": 1
   },
   {
    "fieldname": "make",

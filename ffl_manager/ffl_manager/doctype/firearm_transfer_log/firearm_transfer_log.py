@@ -8,7 +8,17 @@ from frappe.utils import strip_html
 
 
 class FirearmTransferLog(Document):
-	pass
+	def validate(self):
+		if self.serial_number and not self.item_code:
+			item_code = frappe.db.get_value("Serial No", self.serial_number, "item_code")
+			if item_code:
+				self.item_code = item_code
+
+		# fetch_from (item_code.item_name) resolves during _validate_links(), which runs
+		# before this validate() — so when item_code is only just set above, the fetch
+		# won't have picked it up yet. Backfill item_name explicitly in that case.
+		if self.item_code and not self.item_name:
+			self.item_name = frappe.db.get_value("Item", self.item_code, "item_name")
 
 
 @frappe.whitelist()

@@ -6,6 +6,15 @@ frappe.ui.form.on("Firearm Transfer Log", {
 		frm.add_custom_button(__("Copy to Clipboard"), () => copy_filemaker_text(frm));
 	},
 
+	serial_number(frm) {
+		if (!frm.doc.serial_number) return;
+		frappe.db.get_value("Serial No", frm.doc.serial_number, "item_code").then((r) => {
+			if (r.message && r.message.item_code) {
+				frm.set_value("item_code", r.message.item_code);
+			}
+		});
+	},
+
 	sales_order(frm) {
 		if (!frm.doc.sales_order) return;
 		frappe.call({
