@@ -80,7 +80,7 @@ function build_filemaker_clipboard_text(doc, caliber_mapping) {
 	set("ZIP", address.zip);
 
 	set("SENT_PARAGRAPH", build_sent_paragraph(name, address, ffl));
-	set("RECEIVED_PARAGRAPH", to_escaped_block(doc.received_from_address));
+	set("RECEIVED_PARAGRAPH", build_received_paragraph(name, doc.received_from_address));
 
 	return lines.join("\n");
 }
@@ -132,12 +132,18 @@ function parse_address_block(text) {
 	return result;
 }
 
-function to_escaped_block(text) {
-	return (text || "")
-		.split(/\r?\n/)
-		.map((line) => line.trim())
-		.filter(Boolean)
-		.join("\\n");
+// Mirrors build_sent_paragraph: received_from_address isn't guaranteed to include
+// the sender's name (depends which path populated it — RMA fetch, Stock Entry
+// auto-creation, or manual entry), so prepend it explicitly rather than trusting
+// the address field to already contain it.
+function build_received_paragraph(name, address_text) {
+	const rows = [];
+	if (name) rows.push(name);
+	for (const raw of (address_text || "").split(/\r?\n/)) {
+		const line = raw.trim();
+		if (line) rows.push(line);
+	}
+	return rows.join("\\n");
 }
 
 function format_date_mmddyyyy(date_str) {
