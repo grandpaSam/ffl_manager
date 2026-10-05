@@ -26,10 +26,10 @@
 ;    6  Sent-to FFL#                           [Sent only]
 ;    7  Date Sent                              [Sent only]
 ;    8  Serial # (pre-filled on Sent)          [Received only]
-;    9  Manufacturer (always pre-filled)       [skip always]
-;    10 Model (always pre-filled)               [skip always]
-;    11 Type: RIFLE/PISTOL (autocomplete)      [Sent only]
-;    12 Caliber (autocomplete)                 [Sent only]
+;    9  Manufacturer                           [Received only — blank new entry; already filled by the time it's Sent]
+;    10 Model                                  [Received only — blank new entry; already filled by the time it's Sent]
+;    11 Type: RIFLE/PISTOL (autocomplete)      [both]
+;    12 Caliber (autocomplete)                 [both]
 ;    13 Notes                                  [both]
 ;    14 Shipped? radio, Yes default            [Yes=Sent, No=Received]
 ;    15 (unlabeled)                            [skip always]
@@ -103,10 +103,10 @@ EnterReceived(data) {
 	SkipField("6. Sent-to FFL#")
 	SkipField("7. Date Sent")
 	TypeField(data.Get("SERIAL", ""), false, "8. Serial number")
-	SkipField("9. Manufacturer")
-	SkipField("10. Model")
-	SkipField("11. Type")
-	SkipField("12. Caliber")
+	TypeField(data.Get("MAKE", ""), false, "9. Manufacturer")
+	TypeField(data.Get("MODEL", ""), false, "10. Model")
+	TypeField(data.Get("TYPE", ""), true, "11. Type")
+	TypeField(data.Get("CALIBER", ""), true, "12. Caliber")
 	TypeField(data.Get("NOTES", ""), false, "13. Notes")
 	RadioSelect(1, "14. Shipped? -> No")
 	SkipField("15. (unlabeled)")
