@@ -59,8 +59,9 @@
   },
   {
    "fieldname": "phone",
-   "fieldtype": "Phone",
-   "label": "Phone"
+   "fieldtype": "Data",
+   "label": "Phone",
+   "options": "Phone"
   },
   {
    "fieldname": "email",
