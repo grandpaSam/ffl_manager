@@ -135,14 +135,19 @@ function parse_address_block(text) {
 // Mirrors build_sent_paragraph: received_from_address isn't guaranteed to include
 // the sender's name (depends which path populated it — RMA fetch, Stock Entry
 // auto-creation, or manual entry), so prepend it explicitly rather than trusting
-// the address field to already contain it.
+// the address field to already contain it. But some paths/manual habits DO already
+// put the name on the first line (e.g. a pasted address block) — skip prepending
+// in that case so the name doesn't end up duplicated.
 function build_received_paragraph(name, address_text) {
-	const rows = [];
-	if (name) rows.push(name);
-	for (const raw of (address_text || "").split(/\r?\n/)) {
-		const line = raw.trim();
-		if (line) rows.push(line);
-	}
+	const lines = (address_text || "")
+		.split(/\r?\n/)
+		.map((line) => line.trim())
+		.filter(Boolean);
+
+	const already_has_name = name && lines.length && lines[0].toLowerCase() === name.trim().toLowerCase();
+
+	const rows = already_has_name ? [] : name ? [name] : [];
+	rows.push(...lines);
 	return rows.join("\\n");
 }
 
