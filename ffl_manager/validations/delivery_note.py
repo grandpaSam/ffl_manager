@@ -1,6 +1,8 @@
 import frappe
 from frappe import _
 
+from erpnext.stock.serial_batch_bundle import get_serial_nos as get_serial_nos_from_bundle
+
 from ffl_manager.ffl_manager.doctype.ffl_dealer.ffl_dealer import get_dealer_address_display
 from ffl_manager.ffl_manager.doctype.firearm_transfer_log.firearm_transfer_log import fetch_from_sales_order
 from ffl_manager.ffl_manager.firearm_transfer import (
@@ -24,8 +26,22 @@ def _get_ffl_rows(doc, item):
     return packed_items if packed_items else [item]
 
 
+def _get_row_serials(row):
+    """Return the serial numbers on a Delivery Note item / packed item row.
+
+    Serials may be typed into the legacy ``serial_no`` text field or picked through a
+    Serial and Batch Bundle. ERPNext also moves typed serials into a bundle (blanking
+    ``serial_no``) during its own on_submit on returns, so check both.
+    """
+    serials = parse_serial_nos(row.serial_no)
+    if not serials and row.get("serial_and_batch_bundle"):
+        serials = get_serial_nos_from_bundle(row.serial_and_batch_bundle)
+    return serials
+
+
 def validate_ffl_required(doc, method):
-    if doc.get("custom_skip_ffl_check"):
+    # A return brings the firearm back in; there's no outbound FFL transfer to validate.
+    if doc.get("custom_skip_ffl_check") or doc.get("is_return"):
         return
     for item in doc.items:
         for row in _get_ffl_rows(doc, item):
@@ -57,6 +73,11 @@ def create_firearm_transfer_logs(doc, method):
     # NB: unlike validate_ffl_required, this does NOT bail on custom_skip_ffl_check.
     # A repair-return DN (RMA-linked, no FFL dealer) still ships without routing
     # through an FFL, but the bound-book disposition entry must still be written.
+    if doc.get("is_return"):
+        # A sales return is an acquisition, not a disposition. It's recorded by the RMA
+        # Material Receipt Stock Entry hook (validations/stock_entry.py) or entered manually.
+        return
+
     dealer_info_cache = {}
 
     for item in doc.items:
@@ -64,7 +85,7 @@ def create_firearm_transfer_logs(doc, method):
             if not frappe.db.get_value("Item", row.item_code, "custom_ffl_required"):
                 continue
 
-            serials = parse_serial_nos(row.serial_no)
+            serials = _get_row_serials(row)
             if not serials:
                 frappe.throw(
                     _(
