@@ -1,0 +1,114 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:rule_name",
+ "creation": "2026-10-22 00:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "rule_name",
+  "enabled",
+  "column_break_main",
+  "applies_to_item_group",
+  "notes_section",
+  "notes",
+  "states_section",
+  "states",
+  "substitutions_section",
+  "substitutions"
+ ],
+ "fields": [
+  {
+   "fieldname": "rule_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Rule Name",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "default": "1",
+   "fieldname": "enabled",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Enabled"
+  },
+  {
+   "fieldname": "column_break_main",
+   "fieldtype": "Column Break"
+  },
+  {
+   "description": "Optional. Leave blank to apply to any item group.",
+   "fieldname": "applies_to_item_group",
+   "fieldtype": "Link",
+   "label": "Applies To Item Group",
+   "options": "Item Group"
+  },
+  {
+   "fieldname": "notes_section",
+   "fieldtype": "Section Break",
+   "label": "Notes"
+  },
+  {
+   "description": "Reference for the law/regulation this rule covers.",
+   "fieldname": "notes",
+   "fieldtype": "Small Text",
+   "label": "Notes"
+  },
+  {
+   "fieldname": "states_section",
+   "fieldtype": "Section Break",
+   "label": "States"
+  },
+  {
+   "description": "States this rule applies to.",
+   "fieldname": "states",
+   "fieldtype": "Table MultiSelect",
+   "label": "States",
+   "options": "Compliance Rule State",
+   "reqd": 1
+  },
+  {
+   "fieldname": "substitutions_section",
+   "fieldtype": "Section Break",
+   "label": "Substitutions"
+  },
+  {
+   "description": "What to do to the parts list for matching orders.",
+   "fieldname": "substitutions",
+   "fieldtype": "Table",
+   "label": "Substitutions",
+   "options": "Compliance Substitution",
+   "reqd": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-10-22 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Ffl Manager",
+ "name": "State Compliance Rule",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

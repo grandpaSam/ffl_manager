@@ -15,16 +15,37 @@ fixtures = [
     }
 ]
 
+doctype_js = {
+    "Work Order": "public/js/work_order.js",
+    "Delivery Note": "public/js/delivery_note.js",
+}
+
 doc_events = {
     "Delivery Note": {
-        "before_submit": "ffl_manager.validations.delivery_note.validate_ffl_required",
-        "on_submit": "ffl_manager.validations.delivery_note.create_firearm_transfer_logs"
+        "before_submit": [
+            "ffl_manager.validations.delivery_note.validate_ffl_required",
+            "ffl_manager.validations.compliance_delivery_note.validate_compliance",
+        ],
+        "on_submit": "ffl_manager.validations.delivery_note.create_firearm_transfer_logs",
+        "before_save": "ffl_manager.validations.compliance_packed_items.validate_packed_items",
+    },
+    "Sales Order": {
+        "before_save": "ffl_manager.validations.compliance_packed_items.validate_packed_items",
+        "before_submit": "ffl_manager.validations.compliance_packed_items.validate_packed_items",
     },
     "Shipment": {
         "on_submit": "ffl_manager.validations.shipment.create_firearm_transfer_logs"
     },
     "Stock Entry": {
-        "on_submit": "ffl_manager.validations.stock_entry.create_firearm_transfer_logs"
+        "on_submit": "ffl_manager.validations.stock_entry.create_firearm_transfer_logs",
+        "validate": "ffl_manager.validations.compliance_stock_entry.validate",
+    },
+    "Work Order": {
+        "validate": "ffl_manager.validations.work_order.validate",
+        "on_submit": "ffl_manager.validations.work_order.copy_compliance_note_to_job_cards",
+    },
+    "Address": {
+        "validate": "ffl_manager.validations.compliance_address.validate",
     },
     "File": {
         "before_delete": "ffl_manager.ffl_manager.doctype.ffl_dealer.ffl_dealer.archive_ffl_copy"
