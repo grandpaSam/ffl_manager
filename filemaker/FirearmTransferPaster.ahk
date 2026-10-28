@@ -27,7 +27,7 @@
 ;    7  Date Sent                              [Sent only]
 ;    8  Serial # (pre-filled on Sent)          [Received only]
 ;    9  Manufacturer                           [Received only — blank new entry; already filled by the time it's Sent]
-;    10 Model                                  [Received only — blank new entry; already filled by the time it's Sent]
+;    10 Model (autocomplete)                   [Received only — blank new entry; already filled by the time it's Sent]
 ;    11 Type: RIFLE/PISTOL (autocomplete)      [both]
 ;    12 Caliber (autocomplete)                 [both]
 ;    13 Notes                                  [both]
@@ -104,7 +104,7 @@ EnterReceived(data) {
 	SkipField("7. Date Sent")
 	TypeField(data.Get("SERIAL", ""), false, "8. Serial number")
 	TypeField(data.Get("MAKE", ""), false, "9. Manufacturer")
-	TypeField(data.Get("MODEL", ""), false, "10. Model")
+	TypeField(data.Get("MODEL", ""), true, "10. Model")
 	TypeField(data.Get("TYPE", ""), true, "11. Type")
 	TypeField(data.Get("CALIBER", ""), true, "12. Caliber")
 	TypeField(data.Get("NOTES", ""), false, "13. Notes")
