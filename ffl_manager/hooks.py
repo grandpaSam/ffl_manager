@@ -15,6 +15,10 @@ fixtures = [
     }
 ]
 
+doctype_js = {
+    "Sales Order": "public/js/sales_order.js",
+}
+
 doc_events = {
     "Delivery Note": {
         "before_submit": "ffl_manager.validations.delivery_note.validate_ffl_required",

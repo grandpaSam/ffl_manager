@@ -16,6 +16,7 @@ frappe.provide("ffl_manager");
 	const esc = (v) => frappe.utils.escape_html(v == null ? "" : String(v));
 
 	// opts.dealer: update this dealer (form button); otherwise create or match by license
+	// opts.on_saved(dealer, verified): called after saving instead of opening the dealer
 	ffl_manager.import_ffl_copy = function (opts = {}) {
 		new frappe.ui.FileUploader({
 			dialog_title: __("Upload FFL Copy"),
@@ -250,7 +251,9 @@ frappe.provide("ffl_manager");
 						if (!r.message) return;
 						d.hide();
 						frappe.show_alert({ message: __("FFL Dealer {0} saved", [r.message]), indicator: "green" });
-						if (opts.frm && opts.frm.doc.name === r.message) {
+						if (opts.on_saved) {
+							opts.on_saved(r.message, res);
+						} else if (opts.frm && opts.frm.doc.name === r.message) {
 							opts.frm.reload_doc();
 						} else {
 							frappe.set_route("Form", "FFL Dealer", r.message);
