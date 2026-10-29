@@ -10,6 +10,10 @@
   "license_number",
   "expiration_date",
   "signee_name",
+  "license_name",
+  "trade_name",
+  "license_type",
+  "atf_verified_on",
   "column_break_cmbh",
   "phone",
   "email",
@@ -52,6 +56,31 @@
    "fieldname": "signee_name",
    "fieldtype": "Data",
    "label": "Signee Name"
+  },
+  {
+   "fieldname": "license_name",
+   "fieldtype": "Data",
+   "label": "License Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "trade_name",
+   "fieldtype": "Data",
+   "label": "Trade Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "license_type",
+   "fieldtype": "Data",
+   "label": "License Type",
+   "read_only": 1
+  },
+  {
+   "description": "Last checked against ATF FFL eZ Check",
+   "fieldname": "atf_verified_on",
+   "fieldtype": "Datetime",
+   "label": "ATF Verified On",
+   "read_only": 1
   },
   {
    "fieldname": "column_break_cmbh",
@@ -131,7 +160,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-05 21:53:56.828259",
+ "modified": "2026-10-29 12:00:00.000000",
  "modified_by": "Administrator",
  "module": "Ffl Manager",
  "name": "FFL Dealer",

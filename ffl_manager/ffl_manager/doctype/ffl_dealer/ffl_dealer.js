@@ -19,74 +19,15 @@ frappe.ui.form.on("FFL Dealer", {
 
 	refresh: function (frm) {
 		render_ffl_preview(frm);
-		//
-		// frm.add_custom_button("Extract FFL Data", function () {
-		// 	if (!frm.doc.ffl_copy) {
-		// 		frappe.msgprint("Please attach an FFL copy first.");
-		// 		return;
-		// 	}
-		//
-		// 	frappe.call({
-		// 		method: "ffl_manager.ffl_manager.doctype.ffl_dealer.ffl_dealer.extract_ffl_data",
-		// 		args: { file_url: frm.doc.ffl_copy },
-		// 		callback: function (r) {
-		// 			if (!r.message) return;
-		//
-		// 			const data = r.message;
-		//
-		// 			// Populate form fields directly
-		// 			frm.set_value("dealer_name", data.dealer_name);
-		// 			frm.set_value("license_number", data.license_number);
-		//
-		// 			// Convert expiration date string to a date value
-		// 			if (data.expiration_date) {
-		// 				const d = new Date(data.expiration_date);
-		// 				frm.set_value("expiration_date", frappe.datetime.obj_to_str(d));
-		// 			}
-		//
-		// 			// Show address review section and fields
-		// 			frm.set_df_property("address_review_section", "hidden", 0);
-		// 			frm.set_df_property("ocr_address_line1", "hidden", 0);
-		// 			frm.set_df_property("ocr_city", "hidden", 0);
-		// 			frm.set_df_property("ocr_state", "hidden", 0);
-		// 			frm.set_df_property("ocr_postal_code", "hidden", 0);
-		//
-		// 			// Populate address review fields
-		// 			frm.set_value("ocr_address_line1", data.address_line1);
-		// 			frm.set_value("ocr_city", data.city);
-		// 			frm.set_value("ocr_state", data.state);
-		// 			frm.set_value("ocr_postal_code", data.postal_code);
-		//
-		// 			// Add Create Address button
-		// 			frm.add_custom_button("Create Address", function () {
-		// 				frappe.call({
-		// 					method: "ffl_manager.ffl_manager.doctype.ffl_dealer.ffl_dealer.create_ffl_address",
-		// 					args: {
-		// 						dealer_name: frm.doc.name,
-		// 						address_line1: frm.doc.ocr_address_line1,
-		// 						city: frm.doc.ocr_city,
-		// 						state: frm.doc.ocr_state,
-		// 						postal_code: frm.doc.ocr_postal_code,
-		// 					},
-		// 					callback: function (r) {
-		// 						if (r.message) {
-		// 							frappe.msgprint("Address created successfully.");
-		//
-		// 							// Hide address review section and fields
-		// 							frm.set_df_property("address_review_section", "hidden", 1);
-		// 							frm.set_df_property("ocr_address_line1", "hidden", 1);
-		// 							frm.set_df_property("ocr_city", "hidden", 1);
-		// 							frm.set_df_property("ocr_state", "hidden", 1);
-		// 							frm.set_df_property("ocr_postal_code", "hidden", 1);
-		//
-		// 							frm.reload_doc();
-		// 						}
-		// 					},
-		// 				});
-		// 			});
-		// 		},
-		// 	});
-		// });
+		frm.add_custom_button(frm.is_new() ? __("Fill from FFL Copy") : __("Update from FFL Copy"), () =>
+			frappe.require("/assets/ffl_manager/js/ffl_import.js", () =>
+				ffl_manager.import_ffl_copy({
+					dealer: frm.is_new() ? null : frm.doc.name,
+					signee_name: frm.doc.signee_name,
+					frm,
+				})
+			)
+		);
 	},
 });
 
